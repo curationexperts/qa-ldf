@@ -4,6 +4,9 @@
 *~
 *#
 
+.yardoc
+/doc
+
 /log/*.log
 /tmp
 Gemfile.lock
