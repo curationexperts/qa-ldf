@@ -1,0 +1,12 @@
+# Ignore bundler config.
+/.bundle
+
+*~
+*#
+
+/log/*.log
+/tmp
+Gemfile.lock
+coverage
+pkg
+*.gem
