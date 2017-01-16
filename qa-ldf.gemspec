@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['tom@curationexperts.com']
 
   spec.name          = 'qa-ldf'
-  spec.homepage      = 'http://github.com/no-reply/qa-ldf'
+  spec.homepage      = 'http://github.com/curationexperts/qa-ldf'
   spec.description   = ''
   spec.summary       = ''
 
