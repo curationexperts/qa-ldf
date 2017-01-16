@@ -10,7 +10,7 @@ describe Qa::LDF do
       expect(subject.version).to eql subject::VERSION
     end
   end
-  
+
   describe '.config' do
     it 'defaults to an empty config' do
       expect(subject.config).not_to be_any
@@ -19,8 +19,8 @@ describe Qa::LDF do
     context 'when configured' do
       before { subject.configure!(**options) }
 
-      let(:options) { {opt: :value, opt2: :value2} }
-      
+      let(:options) { { opt: :value, opt2: :value2 } }
+
       it 'returns the configuration instance' do
         expect(subject.config.to_h).to eq options
       end
@@ -29,7 +29,8 @@ describe Qa::LDF do
 
   describe '#configure!' do
     it 'dispatches arguments to the configuration instance' do
-      opts, block  = {opt: :value}, Proc.new {}
+      opts  = { opt: :value }
+      block = proc {}
 
       expect(Qa::LDF::Configuration.instance)
         .to receive(:configure!).with(**opts, &block).once

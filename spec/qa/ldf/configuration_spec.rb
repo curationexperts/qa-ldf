@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Qa::LDF::Configuration do
   subject { described_class.instance }
-  
+
   shared_context 'with configuration' do
     before { subject.configure!(**options) }
 
@@ -42,13 +42,13 @@ describe Qa::LDF::Configuration do
       expect { subject.configure!(new_key: :new_value) }
         .to change { subject[:key] }.from(:value).to(nil)
     end
-    
+
     it 'yields itself' do
       expect { |b| subject.configure!(&b) }.to yield_with_args(subject)
     end
-    
+
     it 'yields configured self' do
-      options = {key1: :value, key2: :value}
+      options = { key1: :value, key2: :value }
 
       subject.configure!(**options) { |c| expect(c.to_h).to eq options }
     end
@@ -60,7 +60,7 @@ describe Qa::LDF::Configuration do
 
   describe '#each' do
     include_context 'with configuration'
-    
+
     it 'enumerates the options hash' do
       expect(subject.each).to contain_exactly(*options.each)
     end

@@ -11,7 +11,7 @@ module Qa
       FILE = File.expand_path('../../../../VERSION', __FILE__)
       MAJOR, MINOR, TINY = File.read(FILE).chomp.split('.')
       STRING = [MAJOR, MINOR, TINY].compact.join('.').freeze
-      
+
       ##
       # @return [String]
       def self.to_s() STRING end

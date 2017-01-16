@@ -58,7 +58,7 @@ module Qa
       #
       # @yield yields self to block
       # @yieldparam config [Configuration] self
-      def configure!(**opts, &block)
+      def configure!(**opts)
         @options = opts
         yield self if block_given?
         self

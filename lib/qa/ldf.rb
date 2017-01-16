@@ -6,17 +6,17 @@ require 'qa/ldf/version'
 # @see https://github.com/projecthydra-labs/questioning_authority Qa
 module Qa
   ##
-  # Providies bindings from `qa` to a linked data fragment caching service for 
+  # Provides bindings from `qa` to a linked data fragment caching service for
   # fast query of RDF-based authorities.
   #
   # @see https://github.com/projecthydra-labs/questioning_authority Qa
-  # @see https://github.com/ActiveTriples/linked-data-fragments Linked Data 
+  # @see https://github.com/ActiveTriples/linked-data-fragments Linked Data
   #   Fragments Cache
   module LDF
     ##
     # @return [Configuration] the singleton configuration instance
     def self.config
-      @@config ||= configure!
+      @config ||= configure!
     end
 
     ##
@@ -24,7 +24,7 @@ module Qa
     #   Qa::LDF.configure
     # @see Configuration#configure
     def self.configure!(**options, &block)
-      @@config = Configuration.instance.configure!(**options, &block)
+      @config = Configuration.instance.configure!(**options, &block)
     end
 
     ##
