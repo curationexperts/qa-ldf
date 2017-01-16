@@ -1,4 +1,7 @@
+# frozen_string_literal: true
 require 'qa/ldf/version'
+require 'qa/authorities'
+
 ##
 # @see https://github.com/projecthydra-labs/questioning_authority Qa
 module Qa
