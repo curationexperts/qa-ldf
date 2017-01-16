@@ -1,28 +1,30 @@
 require 'spec_helper'
 
 describe Qa::LDF do
+  subject(:mod) { described_class }
+
   it 'has a version' do
-    expect(subject::VERSION.to_str).to be_a String
+    expect(mod::VERSION.to_str).to be_a String
   end
 
   describe '#version' do
     it 'returns VERISON' do
-      expect(subject.version).to eql subject::VERSION
+      expect(mod.version).to eql mod::VERSION
     end
   end
 
   describe '.config' do
     it 'defaults to an empty config' do
-      expect(subject.config).not_to be_any
+      expect(mod.config).not_to be_any
     end
 
     context 'when configured' do
-      before { subject.configure!(**options) }
+      before { mod.configure!(**options) }
 
       let(:options) { { opt: :value, opt2: :value2 } }
 
       it 'returns the configuration instance' do
-        expect(subject.config.to_h).to eq options
+        expect(mod.config.to_h).to eq options
       end
     end
   end
@@ -35,7 +37,7 @@ describe Qa::LDF do
       expect(Qa::LDF::Configuration.instance)
         .to receive(:configure!).with(**opts, &block).once
 
-      subject.configure!(**opts, &block)
+      mod.configure!(**opts, &block)
     end
   end
 end

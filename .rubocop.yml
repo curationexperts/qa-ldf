@@ -1,0 +1,12 @@
+require: rubocop-rspec
+
+AllCops:
+  DisplayCopNames: true
+
+Metric/BlockLength:
+  Exclude: 
+    - 'spec/**/*'
+
+# we accept `expect(subject).to receive`
+RSpec/MessageSpies:
+  Enabled: false

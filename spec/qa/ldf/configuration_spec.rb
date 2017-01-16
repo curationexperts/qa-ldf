@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Qa::LDF::Configuration do
-  subject { described_class.instance }
+  subject(:config) { described_class.instance }
 
   shared_context 'with configuration' do
-    before { subject.configure!(**options) }
+    before { config.configure!(**options) }
 
     let(:options) do
       { option: :moomin }
@@ -15,46 +15,46 @@ describe Qa::LDF::Configuration do
     include_context 'with configuration'
 
     it 'gives nil for unconfigured options' do
-      expect(subject[:fake]).to be_nil
+      expect(config[:fake]).to be_nil
     end
 
     it 'accesses options' do
-      options.each { |k, v| expect(subject[k]).to eq v }
+      options.each { |k, v| expect(config[k]).to eq v }
     end
   end
 
   describe '#configure!' do
     it 'configures the options' do
-      expect { subject.configure!(key: :value) }
-        .to change { subject[:key] }.from(nil).to(:value)
+      expect { config.configure!(key: :value) }
+        .to change { config[:key] }.from(nil).to(:value)
     end
 
     it 'overrides the options' do
-      subject.configure!(key: :value)
+      config.configure!(key: :value)
 
-      expect { subject.configure!(key: :new_value) }
-        .to change { subject[:key] }.from(:value).to(:new_value)
+      expect { config.configure!(key: :new_value) }
+        .to change { config[:key] }.from(:value).to(:new_value)
     end
 
     it 'overrides options not in new config' do
-      subject.configure!(key: :value)
+      config.configure!(key: :value)
 
-      expect { subject.configure!(new_key: :new_value) }
-        .to change { subject[:key] }.from(:value).to(nil)
+      expect { config.configure!(new_key: :new_value) }
+        .to change { config[:key] }.from(:value).to(nil)
     end
 
     it 'yields itself' do
-      expect { |b| subject.configure!(&b) }.to yield_with_args(subject)
+      expect { |b| config.configure!(&b) }.to yield_with_args(config)
     end
 
     it 'yields configured self' do
       options = { key1: :value, key2: :value }
 
-      subject.configure!(**options) { |c| expect(c.to_h).to eq options }
+      config.configure!(**options) { |c| expect(c.to_h).to eq options }
     end
 
     it 'returns self' do
-      expect(subject.configure!).to eql subject
+      expect(config.configure!).to eql config
     end
   end
 
@@ -62,7 +62,7 @@ describe Qa::LDF::Configuration do
     include_context 'with configuration'
 
     it 'enumerates the options hash' do
-      expect(subject.each).to contain_exactly(*options.each)
+      expect(config.each).to contain_exactly(*options.each)
     end
   end
 
@@ -70,7 +70,7 @@ describe Qa::LDF::Configuration do
     include_context 'with configuration'
 
     it 'returns the configured options as an array' do
-      expect(subject.to_a).to eq options.to_a
+      expect(config.to_a).to eq options.to_a
     end
   end
 
@@ -78,7 +78,7 @@ describe Qa::LDF::Configuration do
     include_context 'with configuration'
 
     it 'returns the configured options as a hash' do
-      expect(subject.to_h).to eq options
+      expect(config.to_h).to eq options
     end
   end
 end

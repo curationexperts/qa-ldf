@@ -14,15 +14,21 @@ module Qa
 
       ##
       # @return [String]
-      def self.to_s() STRING end
+      def self.to_s
+        STRING
+      end
 
       ##
       # @return [String]
-      def self.to_str() STRING end
+      def self.to_str
+        STRING
+      end
 
       ##
       # @return [Array(String, String, String, String)]
-      def self.to_a() [MAJOR, MINOR, TINY].compact end
+      def self.to_a
+        [MAJOR, MINOR, TINY].compact
+      end
     end
   end
 end
