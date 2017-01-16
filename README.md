@@ -7,4 +7,4 @@ Providies bindings from [Questioning Authority](https://github.com/projecthydra-
 License
 -------
 
-This software is available under [the Apache 2.0 license](LICENSE).
+This software is available under {file:LICENSE the Apache 2.0 license}.

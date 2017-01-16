@@ -53,7 +53,7 @@ module Qa
       end
 
       ##
-      # @param options [Hash]
+      # @param opts [Hash]
       #   @option endpoint [String]
       #
       # @yield yields self to block

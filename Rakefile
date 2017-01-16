@@ -20,7 +20,7 @@ RSpec::Core::RakeTask.new(:spec)
 
 desc 'Build YARD documentation'
 YARD::Rake::YardocTask.new do |t|
-  t.files         = ['lib/**/*.rb', 'LICENSE']
+  t.files         = ['lib/**/*.rb', 'LICENSE.md']
   t.stats_options = ['--list-undoc']
 end
 
