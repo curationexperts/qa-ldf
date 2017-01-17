@@ -24,26 +24,17 @@ module Qa
       extend Forwardable
       include Singleton
 
-      # @!method any?
-      #   @return (see Hash#any?)
-      # @!method each?
-      #   @return (see Hash#each)
-      # @!method fetch?
-      #   @param  (see Hash#fetch)
-      #   @return (see Hash#fetch)
-      # @!method []
-      #   @param  (see Hash#[])
-      #   @return (see Hash#[])
-      # @!method []=
-      #   @param  (see Hash#[]=)
-      #   @return (see Hash#[]=)
-      # @!method to_h
-      #   @param  (see Hash#to_h)
-      #   @return (see Hash#to_h)
-      # @!method to_a
-      #   @param  (see Hash#to_a)
-      #   @return (see Hash#to_a)
-      def_delegators :@options, :any?, :each, :fetch, :[], :[]=, :to_a, :to_h
+      ##
+      # @!macro [attach] def_delegator
+      #   @!method $3()
+      #     Delegates to the underlying options
+      def_delegator :@options, :'[]', :'[]'
+      def_delegator :@options, :'[]=', :'[]='
+      def_delegator :@options, :any?, :any?
+      def_delegator :@options, :each, :each
+      def_delegator :@options, :fetch, :fetch
+      def_delegator :@options, :to_a, :to_a
+      def_delegator :@options, :to_h, :to_h
 
       ##
       # @private
