@@ -1,0 +1,15 @@
+language: ruby
+sudo: false
+
+cache:
+  bundler: true
+
+rvm:
+  - 2.3.3
+  - 2.4.0
+
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  matrix:
+    - "RAILS_VERSION=5.0.0.1"
