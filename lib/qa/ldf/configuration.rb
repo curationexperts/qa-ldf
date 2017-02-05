@@ -54,6 +54,14 @@ module Qa
         yield self if block_given?
         self
       end
+
+      ##
+      # Empties all configuration options
+      #
+      # @return opts [Hash]
+      def reset!
+        @options = {}
+      end
     end
   end
 end

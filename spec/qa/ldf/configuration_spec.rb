@@ -5,6 +5,7 @@ describe Qa::LDF::Configuration do
 
   shared_context 'with configuration' do
     before { config.configure!(**options) }
+    after  { config.reset! }
 
     let(:options) do
       { option: :moomin }
@@ -63,6 +64,14 @@ describe Qa::LDF::Configuration do
 
     it 'enumerates the options hash' do
       expect(config.each).to contain_exactly(*options.each)
+    end
+  end
+
+  describe '#reset!' do
+    include_context 'with configuration'
+
+    it 'resets options hash' do
+      expect { config.reset! }.to change { config.to_a }.to be_empty
     end
   end
 
