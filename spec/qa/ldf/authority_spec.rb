@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Qa::LDF::Authority do
+  include_context 'with cache server'
+
   subject(:authority) { described_class.new }
 
   let(:id) { 'Moomin' }
