@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'qa/authorities'
 
 module Qa
@@ -15,8 +14,10 @@ module Qa
 
       ##
       # @see Qa::Authorities::Base#find
-      def find(_id)
-        {}
+      def find(id)
+        graph = RDF::Graph.load(id)
+
+        json_mapper.map_resource(id, graph)
       end
 
       ##
@@ -27,6 +28,12 @@ module Qa
       # @return [Hash<Symbol, String>] the response as a JSON friendly hash
       def search(_query)
         {}
+      end
+
+      ##
+      # @return [JSON_Mapper]
+      def json_mapper
+        @json_mapper ||= JsonMapper.new
       end
     end
   end

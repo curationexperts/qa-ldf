@@ -3,6 +3,7 @@ require 'qa/ldf/version'
 
 require 'qa/ldf/authority'
 require 'qa/ldf/configuration'
+require 'qa/ldf/json_mapper'
 
 ##
 # @see https://github.com/projecthydra-labs/questioning_authority Qa
