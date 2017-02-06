@@ -1,15 +1,24 @@
 require 'spec_helper'
 
-# @todo: pick a good way to stub graph loading behavior; these tests depends on
-#   the external service. The best choice is probably to stub and contract test
-#   the cache server.
 describe Qa::LDF::Authority do
-  include_context 'with cache server'
+  subject(:authority) do
+    auth = described_class.new
 
-  subject(:authority) { described_class.new }
+    auth.client = FakeClient.new do |client|
+      client.graph = RDF::Graph.new << statement
+      client.label = label
+    end
 
-  let(:subject_uri)  { 'http://id.loc.gov/authorities/subjects/sh2004002557' }
+    auth
+  end
+
+  let(:label)        { 'Marble Island (Nunavut)' }
   let(:endpoint_uri) { RDF::URI.intern(server_endpoint) }
+  let(:subject_uri)  { 'http://id.loc.gov/authorities/subjects/sh2004002557' }
+
+  let(:statement) do
+    [RDF::URI(subject_uri), RDF::Vocab::SKOS.prefLabel, RDF::Literal(label)]
+  end
 
   describe '#all' do
     it 'is enumerable' do
@@ -29,8 +38,7 @@ describe Qa::LDF::Authority do
     end
 
     it 'includes a label' do
-      expect(authority.find(subject_uri)[:label])
-        .to eq 'Marble Island (Nunavut)'
+      expect(authority.find(subject_uri)[:label]).to eq label
     end
   end
 

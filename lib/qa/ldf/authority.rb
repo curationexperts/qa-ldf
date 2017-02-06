@@ -7,6 +7,21 @@ module Qa
     # A Linked Data Fragments-based authority.
     class Authority < Qa::Authorities::Base
       ##
+      # The default linked data fragments client
+      DEFAULT_CLIENT = Qa::LDF::Client
+
+      ##
+      # The default mapper
+      DEFAULT_MAPPER = Qa::LDF::JsonMapper
+
+      ##
+      # @!attribute [rw] client
+      #   @return [Client]
+      # @!attribute [rw] mapper
+      #   @return [Mapper]
+      attr_accessor :client, :mapper
+
+      ##
       # @see Qa::Authorities::Base#all
       def all
         []
@@ -15,9 +30,9 @@ module Qa
       ##
       # @see Qa::Authorities::Base#find
       def find(id)
-        graph = RDF::Graph.load(id)
+        graph = client.get(uri: id)
 
-        json_mapper.map_resource(id, graph)
+        mapper.map_resource(id, graph)
       end
 
       ##
@@ -31,9 +46,15 @@ module Qa
       end
 
       ##
-      # @return [JSON_Mapper]
-      def json_mapper
-        @json_mapper ||= JsonMapper.new
+      # @return [JsonMapper]
+      def mapper
+        @mapper ||= DEFAULT_MAPPER.new
+      end
+
+      ##
+      # @return [Qa::LDF::Client]
+      def client
+        @client ||= DEFAULT_CLIENT.new
       end
     end
   end

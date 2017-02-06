@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 require 'qa/ldf/version'
 
-require 'qa/ldf/authority'
-require 'qa/ldf/configuration'
+require 'qa/ldf/client'
 require 'qa/ldf/json_mapper'
+require 'qa/ldf/configuration'
+
+require 'qa/ldf/authority'
 
 ##
 # @see https://github.com/projecthydra-labs/questioning_authority Qa
