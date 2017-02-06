@@ -4,7 +4,12 @@ require 'qa/authorities'
 module Qa
   module LDF
     ##
-    # A Linked Data Fragments-based authority.
+    # A Linked Data Fragments-based authority. Access linked data resources
+    # through a caching server.
+    #
+    # @todo Configure dataset for individual authority lookup.
+    #
+    # @see LinkedDataFragments::CacheServer
     class Authority < Qa::Authorities::Base
       ##
       # The default linked data fragments client
@@ -19,7 +24,7 @@ module Qa
       #   @return [Client]
       # @!attribute [rw] mapper
       #   @return [Mapper]
-      attr_accessor :client, :mapper
+      attr_writer :client, :mapper
 
       ##
       # @see Qa::Authorities::Base#all
@@ -28,7 +33,14 @@ module Qa
       end
 
       ##
+      # Retrieves the given resource's JSON respresentation from the cache
+      # server.
+      #
+      # The resource is retrieved through the client given by `#client`, and
+      # mapped to JSON using `#mapper`.
+      #
       # @see Qa::Authorities::Base#find
+      # @see Qa::LDF::Client#get
       def find(id)
         graph = client.get(uri: id)
 
