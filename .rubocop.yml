@@ -10,3 +10,9 @@ Metric/BlockLength:
 # we accept `expect(subject).to receive`
 RSpec/MessageSpies:
   Enabled: false
+
+# we accept specs in fakes, mocks, &c...
+RSpec/FilePath:
+  Exclude: 
+    - 'spec/support/**/*'
+

@@ -1,0 +1,15 @@
+development:
+  uri_endpoint: 'http://localhost:3000/{?subject}'
+  uri_root: 'http://localhost:3000/#dataset'
+  cache_backend:
+    provider: 'repository'
+test: &TEST_
+  uri_endpoint: 'http://localhost:3000/{?subject}'
+  uri_root: 'http://localhost:3000/#dataset'
+  cache_backend:
+    provider: 'repository'
+production:
+  uri_endpoint: 'http://localhost:3000/{?subject}'
+  uri_root: 'http://localhost:3000/#dataset'
+  cache_backend:
+    provider: 'repository'
