@@ -26,8 +26,7 @@ module Qa
       #   @return [Symbol] A dataset name (e.g. :lcsh)
       # @!attribute [rw] mapper
       #   @return [Mapper]
-      attr_accessor :name
-      attr_writer :client, :mapper
+      attr_writer :client, :dataset, :mapper
 
       ##
       # @see Qa::Authorities::Base#all
@@ -45,7 +44,7 @@ module Qa
       # @see Qa::Authorities::Base#find
       # @see Qa::LDF::Client#get
       def find(id)
-        graph = client.get(uri: id)
+        graph = client.get(uri: id, dataset: dataset)
 
         mapper.map_resource(id, graph)
       end
@@ -58,6 +57,12 @@ module Qa
       # @return [Hash<Symbol, String>] the response as a JSON friendly hash
       def search(_query)
         {}
+      end
+
+      ##
+      # @return [Symbol]
+      def dataset
+        @dataset ||= :''
       end
 
       ##
