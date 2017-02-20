@@ -18,5 +18,18 @@ shared_examples 'an ld cache client' do
     it 'gives a graph with the subject' do
       expect(client.get(uri: uri)).to be_a_graph_with_subject RDF::URI(uri)
     end
+
+    it 'adds to the root dataset'
+
+    context 'when passing a named dataset' do
+      let(:dataset) { 'viaf' }
+
+      it 'gives a graph with the subject' do
+        expect(client.get(uri: uri, dataset: dataset))
+          .to be_a_graph_with_subject RDF::URI(uri)
+      end
+
+      it 'adds to the named dataset'
+    end
   end
 end

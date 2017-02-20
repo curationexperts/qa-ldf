@@ -22,8 +22,11 @@ module Qa
       ##
       # @!attribute [rw] client
       #   @return [Client]
+      # @!attribute [rw] dataset
+      #   @return [Symbol] A dataset name (e.g. :lcsh)
       # @!attribute [rw] mapper
       #   @return [Mapper]
+      attr_accessor :name
       attr_writer :client, :mapper
 
       ##
