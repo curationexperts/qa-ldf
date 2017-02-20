@@ -6,6 +6,7 @@ require 'pry' unless ENV['CI']
 require 'webmock/rspec'
 
 require 'qa/ldf'
+require 'qa/ldf/spec'
 
 Dir['./spec/support/**/*.rb'].each { |f| require f }
 

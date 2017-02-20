@@ -6,6 +6,7 @@ require 'qa/ldf/json_mapper'
 require 'qa/ldf/configuration'
 
 require 'qa/ldf/authority'
+require 'qa/ldf/authorities'
 
 ##
 # @see https://github.com/projecthydra-labs/questioning_authority Qa

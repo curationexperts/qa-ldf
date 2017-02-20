@@ -15,4 +15,4 @@ gem 'qa', github: 'projecthydra-labs/questioning_authority', branch: 'master'
 
 gem 'ld_cache_fragment',
     github: 'ActiveTriples/linked-data-fragments',
-    branch: 'feature/rack-server'
+    branch: 'feature/multi-dataset'

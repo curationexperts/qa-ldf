@@ -9,6 +9,8 @@ describe Qa::LDF::Client do
   let(:graph_stub) { RDF::Graph.new << [RDF::URI(uri), RDF.type, RDF.Property] }
 
   before do
+    # stub the external request, this behavior is owned by the server,
+    # we just allow it to make the request
     stub_request(:get, uri)
       .to_return(status:  200,
                  body:    graph_stub.dump(:ntriples),

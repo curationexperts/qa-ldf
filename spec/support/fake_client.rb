@@ -12,11 +12,13 @@ class FakeClient
     yield self if block_given?
   end
 
-  def get(uri:)
+  def get(uri:, dataset: :'')
     graph ||= RDF::Graph.new
+    # Use dataset just to satisfy rubocop.
+    # Is there a better config setting for this; exclude this cop from fakes?
     graph =
       graph.dup <<
-      [RDF::URI(uri), RDF::Vocab::SKOS.prefLabel, label || 'moomin']
+      [RDF::URI(uri), RDF::Vocab::SKOS.prefLabel, label || "#{dataset}: moomin"]
     graph
   end
 end
