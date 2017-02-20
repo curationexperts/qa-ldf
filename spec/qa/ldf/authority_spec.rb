@@ -28,17 +28,47 @@ describe Qa::LDF::Authority do
     it 'enumerates the vocabulary'
   end
 
-  describe '#find' do
-    it 'returns a JSON-like hash' do
-      expect(authority.find(subject_uri)).to be_a Hash
+  describe '#client' do
+    it 'defaults to an instance of DEFAULT_CLIENT' do
+      expect(described_class.new.client)
+        .to be_a described_class::DEFAULT_CLIENT
     end
 
-    it 'includes an id' do
-      expect(authority.find(subject_uri)[:id]).to eq subject_uri
+    it 'sets to other instances' do
+      client = described_class::DEFAULT_CLIENT.new
+
+      expect { authority.client = client }
+        .to change { authority.client }
+        .to equal client
+    end
+  end
+
+  describe '#dataset' do
+    it 'defaults an empty string symbol' do
+      expect(described_class.new.dataset).to eq :''
     end
 
-    it 'includes a label' do
-      expect(authority.find(subject_uri)[:label]).to eq label
+    it 'sets to other symbols' do
+      dataset_name = :lcsh
+
+      expect { authority.dataset = dataset_name }
+        .to change { authority.dataset }
+        .to eq dataset_name
+    end
+  end
+
+  describe '#mapper' do
+    it 'defaults to an instance of DEFAULT_MAPPER' do
+      expect(described_class.new.mapper)
+        .to be_a described_class::DEFAULT_MAPPER
+    end
+
+    it 'sets to other instances' do
+      mapper = described_class::DEFAULT_MAPPER.new
+
+      expect { authority.mapper = mapper }
+        .to change { authority.mapper }
+        .to equal mapper
     end
   end
 
