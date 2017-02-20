@@ -4,8 +4,9 @@ AllCops:
   DisplayCopNames: true
 
 Metric/BlockLength:
-  Exclude: 
+  Exclude:
     - 'spec/**/*'
+    - 'lib/qa/ldf/spec/**/*'
 
 # we accept `expect(subject).to receive`
 RSpec/MessageSpies:
@@ -13,6 +14,7 @@ RSpec/MessageSpies:
 
 # we accept specs in fakes, mocks, &c...
 RSpec/FilePath:
-  Exclude: 
+  Exclude:
+    - 'spec/contracts/**/*'
     - 'spec/support/**/*'
-
+    - 'spec/qa/ldf/authorities/**/*'

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'qa/authorities'
+require 'qa/ldf/empty_search_service'
 
 module Qa
   module LDF
@@ -13,11 +14,19 @@ module Qa
     class Authority < Qa::Authorities::Base
       ##
       # The default linked data fragments client
+      DEFAULT_DATASET_NAME = :''
+
+      ##
+      # The default linked data fragments client
       DEFAULT_CLIENT = Qa::LDF::Client
 
       ##
       # The default mapper
       DEFAULT_MAPPER = Qa::LDF::JsonMapper
+
+      ##
+      # The default search service
+      DEFAULT_SEARCH_SERVICE = Qa::LDF::EmptySearchService
 
       ##
       # @!attribute [rw] client
@@ -26,7 +35,16 @@ module Qa
       #   @return [Symbol] A dataset name (e.g. :lcsh)
       # @!attribute [rw] mapper
       #   @return [Mapper]
-      attr_writer :client, :dataset, :mapper
+      # @!attribute [rw] search_service
+      #   @return [#search]
+      attr_writer :client, :dataset, :mapper, :search_service
+
+      ##
+      # @yieldparam authority [Authority] self
+      def initialize(*)
+        super
+        yield self if block_given?
+      end
 
       ##
       # @see Qa::Authorities::Base#all
@@ -54,27 +72,34 @@ module Qa
       #
       # @param _query [String] the query string
       #
-      # @return [Hash<Symbol, String>] the response as a JSON friendly hash
-      def search(_query)
-        {}
-      end
-
-      ##
-      # @return [Symbol]
-      def dataset
-        @dataset ||= :''
-      end
-
-      ##
-      # @return [JsonMapper]
-      def mapper
-        @mapper ||= DEFAULT_MAPPER.new
+      # @return [Array<Hash<Symbol, String>>] the response as a JSON friendly
+      #   hash
+      def search(query)
+        search_service.search(query)
       end
 
       ##
       # @return [Qa::LDF::Client]
       def client
-        @client ||= DEFAULT_CLIENT.new
+        @client ||= self.class::DEFAULT_CLIENT.new
+      end
+
+      ##
+      # @return [Symbol]
+      def dataset
+        @dataset ||= self.class::DEFAULT_DATASET_NAME
+      end
+
+      ##
+      # @return [JsonMapper]
+      def mapper
+        @mapper ||= self.class::DEFAULT_MAPPER.new
+      end
+
+      ##
+      # @return [#search]
+      def search_service
+        @search_service ||= self.class::DEFAULT_SEARCH_SERVICE.new
       end
     end
   end
