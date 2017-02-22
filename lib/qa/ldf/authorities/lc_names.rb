@@ -20,4 +20,12 @@ module Qa
       end
     end
   end
+
+  ##
+  # Alias to hack Qa's namespaced authority logic.
+  #
+  # @see https://github.com/projecthydra-labs/questioning_authority/issues/137
+  module Authorities
+    Lcnames = LDF::LCNames
+  end
 end

@@ -18,6 +18,13 @@ shared_examples 'an ldf authority' do
     end
   end
 
+  it 'is aliased to Qa::Authorities' do
+    unless described_class.eql?(Qa::LDF::Authority)
+      name = described_class.to_s.split('::').last.downcase.camelize
+      expect("Qa::Authorities::#{name}".constantize).to eql described_class
+    end
+  end
+
   describe '#all' do
     it 'is enumerable' do
       expect(authority.all).to respond_to :each
