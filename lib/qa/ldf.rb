@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 require 'qa/ldf/version'
 
+require 'qa/ldf/configuration'
 require 'qa/ldf/client'
 require 'qa/ldf/json_mapper'
-require 'qa/ldf/configuration'
+require 'qa/ldf/model'
 
 require 'qa/ldf/authority'
 require 'qa/ldf/authorities'

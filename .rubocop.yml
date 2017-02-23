@@ -18,3 +18,4 @@ RSpec/FilePath:
     - 'spec/contracts/**/*'
     - 'spec/support/**/*'
     - 'spec/qa/ldf/authorities/**/*'
+    - 'spec/qa/ldf/models/**/*'
