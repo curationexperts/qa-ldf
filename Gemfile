@@ -10,9 +10,6 @@ end
 
 gem 'pry' unless ENV['CI']
 
-# develop on qa master
-gem 'qa', github: 'projecthydra-labs/questioning_authority', branch: 'master'
-
 gem 'ld_cache_fragment',
     github: 'ActiveTriples/linked-data-fragments',
     branch: 'feature/multi-dataset'
