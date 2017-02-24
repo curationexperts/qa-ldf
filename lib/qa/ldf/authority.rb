@@ -8,8 +8,6 @@ module Qa
     # A Linked Data Fragments-based authority. Access linked data resources
     # through a caching server.
     #
-    # @todo Configure dataset for individual authority lookup.
-    #
     # @see LinkedDataFragments::CacheServer
     class Authority < Qa::Authorities::Base
       ##
