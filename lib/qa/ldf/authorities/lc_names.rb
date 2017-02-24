@@ -10,7 +10,17 @@ module Qa
     # @see LinkedDataFragments::CacheServer
     class LCNames < Authority
       DEFAULT_DATASET_NAME = :lcnames
+      NAMESPACE            = 'http://id.loc.gov/authorities/names/'.freeze
       LC_SUBAUTHORITY      = 'names'.freeze
+
+      register_namespace(namespace: NAMESPACE,
+                         klass:     self)
+
+      ##
+      # @return [String] the URI namespace associated with this authority
+      def self.namespace
+        NAMESPACE
+      end
 
       ##
       # Uses the LC names subauthority as the search provider

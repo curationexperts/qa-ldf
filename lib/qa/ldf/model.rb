@@ -7,6 +7,63 @@ module Qa
     class Model
       include ActiveTriples::RDFSource
 
+      ##
+      # @return [Qa::LDF::Authority]
+      #
+      # @example
+      #   # Regester the namespace with the authority class.
+      #   class MyAuthority < Authority
+      #     register_namespace(namespace: 'http://example.com/my_authority#',
+      #                        klass:     self)
+      #   end
+      #
+      #   model = Qa::LDF::Model.new('http://example.com/my_authority#moomin')
+      #
+      #   model.authority # => #<MyAuthority:0xbad1dea>
+      #
+      def authority
+        Qa::LDF::Authority.for(namespace: authority_namespace)
+      end
+
+      ##
+      # @return [String] the namespace for the authority used by this model
+      #   instance.
+      #
+      # @example
+      #   # Regester the namespace with the authority class.
+      #   class MyAuthority < Authority
+      #     register_namespace(namespace: 'http://example.com/my_authority#',
+      #                        klass:     self)
+      #   end
+      #
+      #   model = Qa::LDF::Model.new('http://example.com/my_authority#moomin')
+      #
+      #   model.authority_namespace # => 'http://example.com/my_authority#'
+      #
+      def authority_namespace
+        return Qa::LDF::Authority.namespace if node?
+
+        Qa::LDF::Authority
+          .namespaces
+          .find { |ns| to_uri.start_with?(ns) }
+      end
+
+      ##
+      # Fetches from the cache client.
+      #
+      # @see ActiveTriples::RDFSource#fetch
+      # def fetch
+      #   authority.find(to_uri)
+      #   self
+      # rescue => e
+      #   if block_given?
+      #     yield(self)
+      #     self
+      #   else
+      #     raise e
+      #   end
+      # end
+
       class << self
         ##
         # Builds a model from the graph.

@@ -26,6 +26,52 @@ module Qa
       # The default search service
       DEFAULT_SEARCH_SERVICE = Qa::LDF::EmptySearchService
 
+      class << self
+        @@namespace_map = {}
+
+        ##
+        # Gives an authority class for the given namespace.
+        #
+        # @param namespace [#to_s] a URI-like namespace string
+        #
+        # @return [Authority]
+        def for(namespace:)
+          @@namespace_map.fetch(namespace.to_s) { self }.new
+        end
+
+        ##
+        # @return [String] gives an empty string for no namespace,
+        #   {#for_namespace} returns self in this case
+        def namespace
+          ''
+        end
+
+        ##
+        # @return [Enumerable<String>]
+        def namespaces
+          @@namespace_map.keys
+        end
+
+        ##
+        # Registers a namespace/class pair.
+        #
+        # @param namespace [#to_s] a URI-like namespace string
+        # @param klass     [Class] an authority class
+        #
+        # @return [void]
+        def register_namespace(namespace:, klass:)
+          @@namespace_map[namespace.to_s] = klass
+        end
+
+        ##
+        # Resets the namespaces
+        #
+        # @return [void]
+        def reset_namespaces
+          @@namespace_map = {}
+        end
+      end
+
       ##
       # @!attribute [rw] client
       #   @return [Client]
