@@ -19,3 +19,8 @@ RSpec/FilePath:
     - 'spec/support/**/*'
     - 'spec/qa/ldf/authorities/**/*'
     - 'spec/qa/ldf/models/**/*'
+
+# we allow non-Class describes for integration
+RSpec/DescribeClass:  
+  Exclude:
+    - 'spec/integration/**/*'

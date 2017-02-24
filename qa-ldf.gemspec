@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'qa', '~> 0.11.0'
 
+  spec.add_development_dependency 'active-fedora',     '~> 11.0'
   spec.add_development_dependency 'guard',             '~> 2.14'
   spec.add_development_dependency 'ld_cache_fragment', '~> 0.1'
   spec.add_development_dependency 'rake',              '~> 12.0'
