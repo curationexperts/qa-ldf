@@ -7,11 +7,5 @@ describe Qa::LDF::EmptySearchService do
 
   subject(:search_service) { described_class.new }
 
-  describe '#search' do
-    it 'responds empty to arbitrary queries' do
-      ['-NonSensE\ !QUERY', 'Bărăganul (Romania)'].each do |query|
-        expect(search_service.search(query)).to be_empty
-      end
-    end
-  end
+  let(:searches) { { '-NonSensE\ !QUERY' => [], 'Bărăganul (Romania)' => [] } }
 end
