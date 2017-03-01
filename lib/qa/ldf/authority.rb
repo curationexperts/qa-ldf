@@ -106,9 +106,14 @@ module Qa
       # @see Qa::Authorities::Base#find
       # @see Qa::LDF::Client#get
       def find(id)
-        graph = client.get(uri: id, dataset: dataset)
+        mapper.map_resource(id, graph(id))
+      end
 
-        mapper.map_resource(id, graph)
+      ##
+      # @param uri [RDF::URI]
+      # @return [RDF::Enumerable]
+      def graph(uri)
+        client.get(uri: uri, dataset: dataset)
       end
 
       ##

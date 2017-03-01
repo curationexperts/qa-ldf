@@ -93,17 +93,23 @@ shared_examples 'an ldf model' do
     let(:ns)    { 'http://example.com/moomin_auth/' }
     let(:id)    { ns + 'moomin' }
 
-    let(:statement) { RDF::Statement.new(:s, RDF::Vocab::SKOS.prefLabel, :o) }
+    let(:klass) do
+      Class.new(Qa::LDF::Authority) do
+        register_namespace(namespace: 'http://example.com/moomin_auth',
+                           klass:     self)
 
-    before do
-      Qa::LDF::Authority.register_namespace(namespace: ns, klass: klass)
+        def initialize
+          @client = FakeClient.new
+        end
+      end
     end
 
-    xit 'populates the graph' do
+    before { klass }
+
+    it 'populates the graph from the client' do
       expect { model.fetch }
-        .to change { model }
+        .to change { model.statements }
         .from(be_empty)
-        .to(contain_exactly(statement))
     end
   end
 end

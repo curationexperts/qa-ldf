@@ -52,17 +52,14 @@ module Qa
       # Fetches from the cache client.
       #
       # @see ActiveTriples::RDFSource#fetch
-      # def fetch
-      #   authority.find(to_uri)
-      #   self
-      # rescue => e
-      #   if block_given?
-      #     yield(self)
-      #     self
-      #   else
-      #     raise e
-      #   end
-      # end
+      def fetch
+        insert(authority.graph(to_uri))
+      rescue => e
+        raise e unless block_given?
+        yield(self)
+      ensure
+        self
+      end
 
       class << self
         ##

@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'active_fedora'
 
+# Tests the main boundaries to ActiveFedora. This should be considered
+# incomplete, at best. We haven't exhastively analyzed relevant AF behavior.
 describe 'ActiveFedora integration' do
   subject(:af_model) { af_model_class.new }
 
@@ -29,7 +31,27 @@ describe 'ActiveFedora integration' do
     expect(af_model.programmer).to contain_exactly(be_term(value_uri))
   end
 
-  xit 'value can retrieve its graph from the cache' do
-    af_model.programmer = [value_uri]
+  describe 'retrieving from the server' do
+    include_context 'with cache server'
+
+    let(:statement) do
+      RDF::Statement(value_uri, RDF::URI('http://example.com/p'), :o)
+    end
+
+    let(:stub) do
+      stub_request(:get, value_uri.to_s)
+        .to_return(body:    statement.to_ntriples,
+                   headers: { 'Content-Type' => 'text/turtle' })
+    end
+
+    # touch the stub
+    before { stub }
+
+    it 'value can retrieve its graph from the cache' do
+      af_model.programmer = [value_uri]
+
+      af_model.programmer.first.fetch
+      expect(stub).to have_been_requested
+    end
   end
 end
