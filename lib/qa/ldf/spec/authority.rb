@@ -25,6 +25,19 @@ shared_examples 'an ldf authority' do
     end
   end
 
+  it 'is registered' do
+    expect(Qa::LDF::Authority.for(namespace: described_class.namespace))
+      .to be_a described_class
+  end
+
+  describe '.namespace' do
+    it 'returns a namespace string' do
+      unless described_class.namespace == ''
+        expect(RDF::URI(described_class.namespace)).to be_valid
+      end
+    end
+  end
+
   describe '#all' do
     it 'is enumerable' do
       expect(authority.all).to respond_to :each
@@ -71,6 +84,15 @@ shared_examples 'an ldf authority' do
 
     it 'maps to a json-friendly hash' do
       expect { JSON.generate(authority.find(ldf_uri)) }.not_to raise_error
+    end
+
+    context 'when dataset is not assigned' do
+      before { authority.dataset = nil }
+
+      it 'finds a uri' do
+        expect(authority.find(ldf_uri))
+          .to include id: ldf_uri.to_s, label: ldf_label
+      end
     end
   end
 

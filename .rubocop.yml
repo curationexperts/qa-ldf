@@ -8,6 +8,12 @@ Metric/BlockLength:
     - 'spec/**/*'
     - 'lib/qa/ldf/spec/**/*'
 
+# Class variables are fine. We want the "nasty" behavior described by rubocop 
+# in some cases.
+# https://github.com/bbatsov/ruby-style-guide/blob/master/README.md#no-class-vars
+Style/ClassVars:
+  Enabled: false
+
 # we accept `expect(subject).to receive`
 RSpec/MessageSpies:
   Enabled: false
@@ -19,3 +25,8 @@ RSpec/FilePath:
     - 'spec/support/**/*'
     - 'spec/qa/ldf/authorities/**/*'
     - 'spec/qa/ldf/models/**/*'
+
+# we allow non-Class describes for integration
+RSpec/DescribeClass:  
+  Exclude:
+    - 'spec/integration/**/*'
