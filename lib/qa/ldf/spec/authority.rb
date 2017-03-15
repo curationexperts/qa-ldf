@@ -113,7 +113,7 @@ shared_examples 'an ldf authority' do
 
   describe '#search' do
     let(:query)    { 'My Fake Query' }
-    let(:response) { { my: 'response' } }
+    let(:response) { [{ my: 'response' }] }
 
     it 'gives an array' do
       expect(authority.search('tove')).to respond_to :to_ary
