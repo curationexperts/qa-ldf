@@ -119,7 +119,7 @@ module Qa
       ##
       # Search the vocabulary
       #
-      # @param _query [String] the query string
+      # @param query [String] the query string
       #
       # @return [Array<Hash<Symbol, String>>] the response as a JSON friendly
       #   hash
