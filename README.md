@@ -117,12 +117,58 @@ Faceted Application of Subject Terminology
 Configuring authorities
 -----------------------
 
-
 ### [TK] Models.
 
 ### Forms
 
 Autocomplete handling for Questioning Authority is provided by Sufia/Hyrax. To this handling, we add a custom dropdown for selecting from multiple authorities in a field.
+
+# Hyrax Autocomplete
+
+You've got a `Work` in Hyrax and it has a `Creator` field. Wouldn't it be nice to have autocomplete on that form with a controlled vocabulary? Hyrax has this functionality, but you need to set some things up first.
+
+The most basic way a field is associated with a particular autocomplete data source is with a data attribute on the element. The `data-autocomplete-url` attribute stores a path to the data source. To add one to an existing field create a partial for the field in `app/views/records/edit_fields/`.
+
+In the partial, specify the data source:
+
+```erb
+<%=
+  f.input key,
+  as: :multi_value,
+  input_html: {
+  class: 'form-control',
+  data: { 'autocomplete-url' => "/authorities/search/loc/names",
+          'autocomplete' => key }
+        } ,
+  required: f.object.required?(key) %>
+```
+
+Hyrax comes with [Questioning Authority](https://github.com/projecthydra-labs/questioning_authority) which provides some RESTful endpoints that you can use as autocomplete sources. Checkout the QA README for a list of the authorities that it comes with (you can even make your own).
+
+When the Hyrax form for your `Work` loads the autocomplete JavaScript is initialized for certain fields. For the `Creator` field that we created a partial for, all we needed to was add the data attribute and the autocomplete is activated.
+
+If the field is not one of the default fields, you'll need to run this to activate autocomplete on the field:
+
+```js
+var Autocomplete = require('hyrax/autocomplete');
+var autocomplete = new Autocomplete({
+  "autocompleteFields":
+    ["subject","language","creator","based_near","work"]
+  });
+$('.multi_value.form-group').manage_fields({
+  add: function(e, element) {
+    autocomplete.fieldAdded(element)
+  }
+});
+autocomplete.setup();
+```
+
+You just need to pass the fields when creating an Autocomplete instance.
+
+Autocomplete in Hyrax currently uses jQuery UI Autocomplete. Hyrax stores the [jQuery UI Autocomplete options and source](http://jqueryui.com/autocomplete/#remote-jsonp) in ES6 classes. Unless you need to make specific query that requires you to change the options and source, the JS will use a default query from [default.es6](https://github.com/projecthydra-labs/hyrax/blob/master/app/assets/javascripts/hyrax/autocomplete/default.es6). This should just work with the QA vocabs.
+
+The autocomplete for the `Work` field requires different a different source and options so it has a different class: [work.es6](https://github.com/projecthydra-labs/hyrax/blob/master/app/assets/javascripts/hyrax/autocomplete/work.es6).
+After creating your own class, you will need to import it and an additional case to the autocomplete method in [autocomplete.es6](https://github.com/projecthydra-labs/hyrax/blob/master/app/assets/javascripts/hyrax/autocomplete.es6)
 
 #### Adding Controlled Vocabulary Dropdown Options
 
