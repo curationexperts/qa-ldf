@@ -112,11 +112,11 @@ Authority Sources
 
 ### LCNAF
 
-The Library of Congress Name Authority File
+A caching interface to the Library of Congress Name Authority File is implemented as a QA authority as `Qa::LDF::LCNames`. This uses the same search code deployed by the generic LC authorities provided by QA, but provides `id.loc.gov` results. This authority is aliased to `Qa::Lcnames` pending closure of https://github.com/projecthydra-labs/questioning_authority/issues/137. It is available at the endpoint `authorities/search/lcnames`.
 
 ### FAST
 
-Faceted Application of Subject Terminology
+A similar interface to FAST (Faceted Application of Subject Terminology) is in `Qa::LDF::FAST`. This authority is aliased to `Qa::Fast`, and is available at `authorities/search/fast`.
 
 Configuring authorities
 -----------------------
