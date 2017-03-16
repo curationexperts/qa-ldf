@@ -24,12 +24,13 @@ How Does it Work?
 -----------------
 
 ### [TK] Architecture Overview.
+
 ### Mounting and configuring the LDF caching server
 
 The LDF caching server can run as a mounted application within Rails. To use the caching server, add the following to your `Gemfile`:
 
 ```ruby
-gem 'qa-ldf', '~>0.2.0'
+gem 'qa-ldf', '~>0.3.0'
 
 # for now use the active branch of the linked data caching fragment server
 gem 'ld_cache_fragment', github: 'ActiveTriples/linked-data-fragments', branch: 'feature/multi-dataset'
@@ -46,8 +47,46 @@ Rails.application.routes.draw do
   # ...
 end
 ```
+And add an `ldf.yml` configuration.
 
-### LDF caching as an external service.
+```yaml
+# config/ldf.yml
+development:
+  uri_endpoint: 'http://localhost:3000/ldcache/{?subject}'
+  uri_root: 'http://localhost:3000/ldcache'
+  cache_backend:
+    provider: 'repository'
+test: &TEST_
+  uri_endpoint: 'http://localhost:3000/ldcache/{?subject}'
+  uri_root: 'http://localhost:3000/ldcache'
+  cache_backend:
+provider: 'repository'
+  production:
+  uri_endpoint: 'http://localhost:3000/ldcache/{?subject}'
+  uri_root: 'http://localhost:3000/ldcache'
+  cache_backend:
+    provider: 'marmotta'
+```
+
+You should now be able to access the ldcache endpoint at `http://example.com/ldcache`. That address will return a dataset description for the root dataset. Queries sent to that endpoint access the transparent cache. For example:
+
+    http://example.com/ldcache/?subject=http://id.loc.gov/authorities/subjects/sh2004002556
+
+will pass the request through to the Library of Congress on the first request, subsequent requests are retrieved from the cached.
+
+Finally, configure `Qa::LDF` to aim at the cache server:
+
+```ruby
+Qa::LDF.configure!(endpoint: LinkedDataFragments::Settings.uri_root)
+```
+
+In a Hydra app, the best place to put this is in an initializer, e.g. `config/initializers/hydra_config.rb`.
+
+#### Datasets
+
+The cache server uses [RDF Datasets](http://www.hydra-cg.com/spec/latest/linked-data-fragments/#datasets) to manage sperate cache spaces. The root dataset is at the server root (`http://example.com/ldcache`, above), and additional datasets are available at any `dataset/*` path following from the root. The `Qa::LDF` authorities are configured to use independent datasets, so each authority corresponds to a cache space of its own. Each dataset provides its own description at its base path, and is queryable with `?subject=` queries as demonstrated above.
+
+#### LDF caching as an external service.
 
 The LDF caching server can run independently from your Hydra application as a lightweight, generic [Rack](http://www.rubydoc.info/github/rack/rack/file/SPEC) application, or as a standalone Rails app. You may want to deploy the server in this way so it can run on separate hardware, or to segregate Linked Data "follow your nose" network traffic.
 
@@ -64,10 +103,6 @@ With this in your working directory, you can run `$ rackup` to launch a basic se
 
 #### [TK] LDF caching as a Rails app
 
-### Configuring authorities.
-#### [TK] Models.
-#### [TK] Forms.
-
 Authority Sources
 ----------------------
 
@@ -79,8 +114,81 @@ The Library of Congress Name Authority File
 
 Faceted Application of Subject Terminology
 
-[TK] Implementing Custom Authorities
-------------------------------------
+Configuring authorities
+-----------------------
+
+
+### [TK] Models.
+
+### Forms
+
+Autocomplete handling for Questioning Authority is provided by Sufia/Hyrax. To this handling, we add a custom dropdown for selecting from multiple authorities in a field.
+
+#### Adding Controlled Vocabulary Dropdown Options
+
+To create your own dropdown with authorities you extend the `QASelectService` class. By convention, we place this in `app/services`.
+
+```ruby
+# app/services/name_authorities.rb
+class NameAuthorities < QaSelectService
+  def initialize
+    super('names')
+  end
+end
+```
+
+Initialize the service with the name of a YAML file `names.yml` that contains a list of authorities:
+
+```yaml
+terms:
+  - id: /authorities/search/loc/names
+    term: LOC Names
+    active: true
+  - id: /authorities/search/assign_fast/all
+    term: FAST
+    active: true
+```
+
+Then in the partials for the input field at `app/views/records/edit_fields/_creator.html.erb`:
+
+```erb
+<% name_authorities = Hyrax::NameAuthorities.new %>
+
+<%=
+  f.input key,
+    as: :multi_value,
+    input_html: {
+      class: 'form-control',
+      data: { 'autocomplete-url' => name_authorities.select_active_options.first.last,
+              'autocomplete' => key } } ,
+      required: f.object.required?(key) %>
+
+<%= f.input key, collection: name_authorities.select_active_options, label: false %>
+```
+
+Implementing Custom Authorities
+-------------------------------
+
+Custom (local) authorities can be included by placing a YAML configuration in `config/authorities`. This configuration should specific a list of terms, and give an `id`, `term` name, and `active` flag for each of them. Terms can be set `inactive` to disable them.
+
+```yaml
+# config/authorities/moomin_valley.yml
+terms:
+  - id:      http://example.com/moomin
+    term:   'Moomin'
+    active: true
+  - id:      http://example.com/moomin_papa
+    term:   'Moomin Papa'
+    active: true
+  - id:      http://example.com/moomin_mama
+    term:   'Moomin Mama'
+    active: true
+  - id:      http://example.com/snorkmaiden
+    term:   'Snorkmaiden'
+    active: true
+```
+
+These terms are now available from Questioning Authority at `/authorities/search/local/moomin_valley'.
 
 License
 -------
