@@ -52,6 +52,8 @@ eos
 
   describe '#dataset' do
     it 'defaults to :fast' do
+      require 'pry'
+      binding.pry
       expect(described_class.new.dataset).to eq :fast
     end
   end

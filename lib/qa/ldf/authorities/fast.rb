@@ -11,7 +11,7 @@ module Qa
     # @see http://www.oclc.org/research/themes/data-science/fast.html
     class FAST < Authority
       DEFAULT_DATASET_NAME = :fast
-      NAMESPACE            = 'http://id.id.worldcat.org/fast/'.freeze
+      NAMESPACE            = 'http://id.worldcat.org/fast/'.freeze
 
       register_namespace(namespace: NAMESPACE,
                          klass:     self)
@@ -35,7 +35,7 @@ module Qa
       ##
       # Uses the LC AssignFast 'all' subauthority as the search provider
       def search_service
-        @search_service ||= NamespacedSearchService.new do |service|
+        @search_service ||= SearchService.new do |service|
           service.namespace      = NAMESPACE
           service.parent_service =
             Qa::Authorities::AssignFast.subauthority_for('all')
