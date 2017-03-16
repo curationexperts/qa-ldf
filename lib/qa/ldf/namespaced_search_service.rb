@@ -37,7 +37,12 @@ module Qa
         responses = parent_service.search(query)
 
         responses.map do |result|
-          result['id'] = apply_namespace(result['id'])
+          if result.keys.first.is_a?(Symbol)
+            result[:id] = apply_namespace(result[:id])
+          else
+            result['id'] = apply_namespace(result['id'])
+          end
+
           result
         end
       end
