@@ -42,11 +42,9 @@ module Qa
         end
       end
 
-      private
-
       def apply_namespace(id)
         return id if RDF::URI(id).valid?
-        RDF::URI(namespace) / id
+        (RDF::URI(namespace) / id).to_s
       end
     end
   end

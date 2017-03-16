@@ -27,6 +27,7 @@ describe Qa::LDF::LCNames do
   before do
     # mock empty responses for all queries;
     # see spec/contracts/qa_loc_as_search_service.rb for lc search service tests
+    # @todo: test that correct handling of namespacing
     stub_request(:get, 'http://id.loc.gov/search/?format=json&' \
                        'q=cs:http://id.loc.gov/authorities/names')
       .with(headers: { 'Accept' => 'application/json' })
