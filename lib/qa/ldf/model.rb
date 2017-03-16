@@ -61,6 +61,23 @@ module Qa
         self
       end
 
+      ##
+      # @param language [Symbol] a two letter (BCP47) language tag.
+      #
+      # @see ActiveTriples::RDFSource.rdf_label
+      # @see https://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal
+      # @see https://tools.ietf.org/html/bcp47
+      def lang_label(language: :en)
+        labels = rdf_label
+
+        label = labels.find do |literal|
+          literal.respond_to?(:language) && literal.language == language
+        end
+
+        return labels.first unless label
+        label
+      end
+
       class << self
         ##
         # Builds a model from the graph.
