@@ -49,7 +49,7 @@ shared_examples 'an ldf model' do
   end
 
   describe '.from_qa_result' do
-    let(:json_hash) { { id: id, label: label, papa: 'moomin papa' } }
+    let(:json_hash) { { 'id' => id, 'label' => label, 'snork' => 'snork' } }
 
     it 'builds a model with the id as uri' do
       expect(described_class.from_qa_result(qa_result: json_hash))

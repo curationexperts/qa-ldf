@@ -91,9 +91,9 @@ module Qa
         #   protected.
         def from_qa_result(qa_result:)
           qa_result.dup
-          model = new(qa_result.delete(:id))
+          model = new(qa_result.delete(:id.to_s))
           model.set_value(model.send(:default_labels).first,
-                          qa_result.delete(:label))
+                          qa_result.delete(:label.to_s))
 
           model
         end

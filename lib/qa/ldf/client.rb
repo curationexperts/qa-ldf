@@ -32,7 +32,7 @@ module Qa
         cache_uri = RDF::URI(Qa::LDF::Configuration.instance[:endpoint])
         cache_uri.query = "subject=#{uri}"
         cache_uri = cache_uri / 'dataset' / dataset unless dataset.empty?
-        cache_uri
+        cache_uri.dup
       end
     end
   end
