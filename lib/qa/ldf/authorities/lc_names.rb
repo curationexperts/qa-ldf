@@ -1,3 +1,5 @@
+require 'qa/ldf/namespaced_search_service'
+
 # frozen_string_literal: true
 module Qa
   module LDF
@@ -11,10 +13,23 @@ module Qa
     class LCNames < Authority
       DEFAULT_DATASET_NAME = :lcnames
       NAMESPACE            = 'http://id.loc.gov/authorities/names/'.freeze
-      LC_SUBAUTHORITY      = 'names'.freeze
 
       register_namespace(namespace: NAMESPACE,
                          klass:     self)
+
+      ##
+      # A specialized NamespacedSearchService that strips info: uris
+      #
+      # The basic QA LCNames authority returns the info: URIs, instead of the
+      # http: URIs as IDs. This handles conversion between the two.
+      # @note This is not resilient to ids other than LCNames info: uris
+      class SearchService < NamespacedSearchService
+        private
+
+        def apply_namespace(id)
+          super(id.split('/').last)
+        end
+      end
 
       ##
       # @return [String] the URI namespace associated with this authority
@@ -25,8 +40,11 @@ module Qa
       ##
       # Uses the LC names subauthority as the search provider
       def search_service
-        @search_service ||=
-          Qa::Authorities::Loc.subauthority_for(LC_SUBAUTHORITY)
+        @search_service ||= SearchService.new do |service|
+          service.namespace      = NAMESPACE
+          service.parent_service =
+            Qa::Authorities::Loc.subauthority_for('names')
+        end
       end
     end
   end

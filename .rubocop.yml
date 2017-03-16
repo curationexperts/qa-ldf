@@ -5,6 +5,7 @@ AllCops:
 
 Metric/BlockLength:
   Exclude:
+    - 'qa-ldf.gemspec'
     - 'spec/**/*'
     - 'lib/qa/ldf/spec/**/*'
 

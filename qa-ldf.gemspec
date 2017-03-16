@@ -22,7 +22,8 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.2.2'
 
-  spec.add_dependency 'qa', '~> 0.11.0'
+  spec.add_dependency 'rdf', '>= 2.0', '< 2.2.4'
+  spec.add_dependency 'qa',  '~> 0.11.0'
 
   spec.add_development_dependency 'active-fedora',     '~> 11.0'
   spec.add_development_dependency 'guard',             '~> 2.14'

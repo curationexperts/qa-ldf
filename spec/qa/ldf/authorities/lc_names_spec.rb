@@ -27,20 +27,38 @@ describe Qa::LDF::LCNames do
   before do
     # mock empty responses for all queries;
     # see spec/contracts/qa_loc_as_search_service.rb for lc search service tests
+    # @todo: test that correct handling of namespacing
     stub_request(:get, 'http://id.loc.gov/search/?format=json&' \
                        'q=cs:http://id.loc.gov/authorities/names')
       .with(headers: { 'Accept' => 'application/json' })
       .to_return(status: 200, body: '[]', headers: {})
   end
 
-  describe '#search_service' do
-    it 'hits the upstream loc endpoint by default' do
-      query = 'a query'
-      url   = 'http://id.loc.gov/search/?format=json' \
-              "&q=#{query}&q=cs:http://id.loc.gov/authorities/names"
-      expect(a_request(:get, url))
+  describe '#search' do
+    context 'with real search service' do
+      it 'hits the upstream loc endpoint' do
+        query = 'a query'
+        url   = 'http://id.loc.gov/search/?format=json' \
+                "&q=#{query}&q=cs:http://id.loc.gov/authorities/names"
+        expect(a_request(:get, url))
 
-      authority.search_service.search(query)
+        authority.search(query)
+      end
+    end
+
+    context 'with fake search service' do
+      let(:search_service) do
+        FakeSearchService.new { |service| service.queries = searches }
+      end
+
+      let(:searches) { { 'moomin' => results } }
+      let(:results)  { [{ id: 'moomin123', name: 'Moomin' }] }
+
+      before { authority.search_service = search_service }
+
+      it 'returns the values' do
+        expect(authority.search('moomin')).to contain_exactly(*results)
+      end
     end
   end
 
