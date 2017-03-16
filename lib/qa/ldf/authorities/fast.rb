@@ -1,3 +1,5 @@
+require 'qa/ldf/namespaced_search_service'
+
 # frozen_string_literal: true
 module Qa
   module LDF
@@ -15,6 +17,16 @@ module Qa
                          klass:     self)
 
       ##
+      # A specialized NamespacedSearchService that strips 'fst' from fast IDs
+      class SearchService < NamespacedSearchService
+        private
+
+        def apply_namespace(id)
+          super(id.gsub('fst', ''))
+        end
+      end
+
+      ##
       # @return [String] the URI namespace associated with this authority
       def self.namespace
         NAMESPACE
@@ -23,7 +35,11 @@ module Qa
       ##
       # Uses the LC AssignFast 'all' subauthority as the search provider
       def search_service
-        @search_service ||= Qa::Authorities::AssignFast.subauthority_for('all')
+        @search_service ||= NamespacedSearchService.new do |service|
+          service.namespace      = NAMESPACE
+          service.parent_service =
+            Qa::Authorities::AssignFast.subauthority_for('all')
+        end
       end
     end
   end
