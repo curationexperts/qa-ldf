@@ -86,6 +86,10 @@ In a Hydra app, the best place to put this is in an initializer, e.g. `config/in
 
 The cache server uses [RDF Datasets](http://www.hydra-cg.com/spec/latest/linked-data-fragments/#datasets) to manage sperate cache spaces. The root dataset is at the server root (`http://example.com/ldcache`, above), and additional datasets are available at any `dataset/*` path following from the root. The `Qa::LDF` authorities are configured to use independent datasets, so each authority corresponds to a cache space of its own. Each dataset provides its own description at its base path, and is queryable with `?subject=` queries as demonstrated above.
 
+#### Selecting a Triplestore Backend
+
+The caching server provides several backends for persistent storage, we recommend using the Marmotta backend, but a Blazegraph backend (untested with this gem) is also provided. Read the [ActiveTriples::LinkedDataFragments documentation on backend configuration](https://github.com/ActiveTriples/linked-data-fragments#configuration) for more.
+
 #### LDF caching as an external service.
 
 The LDF caching server can run independently from your Hydra application as a lightweight, generic [Rack](http://www.rubydoc.info/github/rack/rack/file/SPEC) application, or as a standalone Rails app. You may want to deploy the server in this way so it can run on separate hardware, or to segregate Linked Data "follow your nose" network traffic.
