@@ -2,6 +2,13 @@ QuestioningAuthority::LDF
 =========================
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 
+
+<a href="https://www.chemheritage.org/" >
+<img src="https://raw.githubusercontent.com/curationexperts/qa-ldf/1e09875605fa979a2981cc6a5c5f823b935530a3/readme_logos/CHF_logo_primary_tagline.jpg" width="25%"></a>
+</br>
+<a href="https://www.imls.gov/">
+<img src="https://raw.githubusercontent.com/curationexperts/qa-ldf/1e09875605fa979a2981cc6a5c5f823b935530a3/readme_logos/imls_logo_2c.jpg" width="25%"></a>
+
 This sofware providies bindings from [Questioning Authority](https://github.com/projecthydra-labs/questioning_authority) to the [linked data caching fragment server](https://github.com/ActiveTriples/linked-data-fragments) for fast query of RDF-based authorities.
 
 What Does This Do?
